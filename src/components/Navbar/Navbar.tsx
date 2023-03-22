@@ -17,7 +17,7 @@ export default function Navbar({ toggleShowCreateTask }: Props) {
       <div className="navbar-main-container">
         <h4>{currentProject.name}</h4>
         <button className="btn" onClick={() => toggleShowCreateTask()}>
-          Add new task
+          Add new ticket
         </button>
       </div>
     </div>
