@@ -3,7 +3,6 @@
   border-right: 1px solid var(--bg-lines);
   background-color: var(--bg-gray);
   color: var(--text-gray);
-  min-height: 100vh;
   max-width: 280px;
   width: 100%;
 
@@ -74,15 +73,7 @@
 
   button {
     border-radius: 5px;
-    background-color: var(--primary);
     width: 100%;
-    border: none;
     padding: 6px 5px;
-    color: var(--text);
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.9;
-    }
   }
 }
