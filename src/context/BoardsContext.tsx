@@ -4,61 +4,88 @@ import { Project, projectsData } from "./projectsData";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
 interface Context {
-  projects: Project[];
-  createProject: (name: string) => void;
-  currentProject: Project;
-  changeBoard: (index: number) => void;
+    projects: Project[];
+    createProject: (name: string) => void;
+    currentProject: Project;
+    createTicket: (
+        title: string,
+        description: string,
+        subtasks: string[]
+    ) => void;
+    changeBoard: (index: number) => void;
 }
 
 const BoardsContext = createContext<Context>({
-  projects: [],
-  createProject: () => {},
-  currentProject: {} as Project,
-  changeBoard: () => {},
+    projects: [],
+    createProject: () => {},
+    currentProject: {} as Project,
+    createTicket: () => {},
+    changeBoard: () => {},
 });
 
 export function useBoardContext() {
-  return useContext(BoardsContext);
+    return useContext(BoardsContext);
 }
 
 type Props = {
-  children: React.ReactNode;
+    children: React.ReactNode;
 };
 
 export default function BoardsContextProvider({ children }: Props) {
-  const [projects, setProjects] = useLocalStorage<Project[]>(
-    "project-data",
-    projectsData
-  );
+    const [projects, setProjects] = useLocalStorage<Project[]>(
+        "project-data",
+        projectsData
+    );
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const currentProject = projects[selectedIndex];
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const currentProject = projects[selectedIndex];
 
-  function createProject(name: string) {
-    setProjects([
-      ...projects,
-      {
-        name,
-        id: uuidv4(),
-        board: [
-          { name: "Todo", tickets: [] },
-          { name: "Doing", tickets: [] },
-          { name: "Done", tickets: [] },
-        ],
-      },
-    ]);
-    changeBoard(projects.length);
-  }
+    function createProject(name: string) {
+        setProjects([
+            ...projects,
+            {
+                name,
+                id: uuidv4(),
+                board: [
+                    { name: "Todo", tickets: [] },
+                    { name: "Doing", tickets: [] },
+                    { name: "Done", tickets: [] },
+                ],
+            },
+        ]);
+        changeBoard(projects.length);
+    }
 
-  function changeBoard(index: number) {
-    setSelectedIndex(index);
-  }
+    function changeBoard(index: number) {
+        setSelectedIndex(index);
+    }
 
-  return (
-    <BoardsContext.Provider
-      value={{ projects, createProject, currentProject, changeBoard }}
-    >
-      {children}
-    </BoardsContext.Provider>
-  );
+    function createTicket(
+        title: string,
+        description: string,
+        subtasks: string[]
+    ) {
+        projects[selectedIndex].board[0].tickets.push({
+            title,
+            description,
+            tasks: subtasks,
+            id: uuidv4(),
+        });
+
+        setProjects([...projects]);
+    }
+
+    return (
+        <BoardsContext.Provider
+            value={{
+                projects,
+                createProject,
+                currentProject,
+                createTicket,
+                changeBoard,
+            }}
+        >
+            {children}
+        </BoardsContext.Provider>
+    );
 }
