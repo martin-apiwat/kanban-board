@@ -10,7 +10,8 @@ interface Context {
     createTicket: (
         title: string,
         description: string,
-        subtasks: string[]
+        subtasks: string[],
+        index: number
     ) => void;
     changeBoard: (index: number) => void;
 }
@@ -63,9 +64,10 @@ export default function BoardsContextProvider({ children }: Props) {
     function createTicket(
         title: string,
         description: string,
-        subtasks: string[]
+        subtasks: string[],
+        index: number
     ) {
-        projects[selectedIndex].board[0].tickets.push({
+        projects[selectedIndex].board[index].tickets.push({
             title,
             description,
             tasks: subtasks,

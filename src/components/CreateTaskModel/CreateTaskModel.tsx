@@ -9,6 +9,7 @@ type Props = {
 
 export default function CreateTaskModel({ toggleShowCreateTask }: Props) {
     const { createTicket } = useBoardContext();
+    const [status, setStatus] = useState(0);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [subtasks, setSubtasks] = useState([""]);
@@ -22,7 +23,19 @@ export default function CreateTaskModel({ toggleShowCreateTask }: Props) {
                 >
                     <X />
                 </div>
+
                 <h3 className="model-title">Create new ticket</h3>
+                <label htmlFor="status">Status</label>
+                <select
+                    name="status"
+                    id="status"
+                    value={status}
+                    onChange={(e) => setStatus(parseInt(e.target.value))}
+                >
+                    <option value={0}>Todo</option>
+                    <option value={1}>Doing</option>
+                    <option value={2}>Done</option>
+                </select>
                 <label htmlFor="title">Title</label>
                 <input
                     type="text"
@@ -70,7 +83,7 @@ export default function CreateTaskModel({ toggleShowCreateTask }: Props) {
                 <button
                     className="btn"
                     onClick={() => {
-                        createTicket(title, description, subtasks);
+                        createTicket(title, description, subtasks, status);
                         toggleShowCreateTask();
                     }}
                 >
