@@ -43,7 +43,9 @@ export default function ProjectLinks() {
                         value={projectName}
                         onChange={(e) => setProjectName(e.target.value)}
                     />
-                    <button className="btn">Create</button>
+                    <button className="btn" disabled={!projectName}>
+                        Create
+                    </button>
                 </form>
             )}
         </div>
